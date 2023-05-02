@@ -1,4 +1,5 @@
 import digitalio
+import board
 from digitalio import *
 from board import *
 
@@ -18,15 +19,16 @@ class corne_board():
     CORNE_ROW2 = D6
     CORNE_ROW3 = D7
 
-    # I2C communication with the OLED
-    CORNE_SDA = D2
-    CORNE_SCL = D3
+    # I2C1 communication with the OLED
+    CORNE_OLED_SDA = D2
+    CORNE_OLED_SCL = D3
 
     # uart with LEDs?
-    CORNE_LED = TX
+    CORNE_LED_TX = TX
 
-    # uart with the other corne keyboard
-    CORNE_DATA = RX
+    # Data communication with another corne
+    CORNE_PAIR_SDA = D1
+    CORNE_PAIR_SCL = D8
 
     CORNE_COL_NUMBER = 6
     CORNE_ROW_NUMBER = 4

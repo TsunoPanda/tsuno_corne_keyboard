@@ -1,9 +1,6 @@
 
 class keyboard_scanner():
 
-    SW_RELEASED = 0
-    SW_PRESSED  = 1
-
     def __init__(self, digital_high, digital_low, dout_ports, din_ports):
         self.digital_high = digital_high
         self.digital_low  = digital_low
@@ -21,8 +18,8 @@ class keyboard_scanner():
         # Get keyboard row number
         row_number    = len(self.din_ports)
 
-        # Initialize the matrix where the scan result to be saved.
-        keyboard_state_matrix = [ [self.SW_RELEASED] * column_number for i in range (row_number)]
+        # Initialize the the scan result.
+        scan_result = 0
 
         # Loop for each column (digital output)
         for column_idx, column_dout in enumerate(self.dout_ports):
@@ -33,15 +30,17 @@ class keyboard_scanner():
             for row_idx, row_din in enumerate(self.din_ports):
                 # If high level detected..
                 if row_din.value == self.digital_high:
+
+                    # Caluculate bit index
+                    bit_idx = row_idx*column_number + column_idx
+
                     # Then it means the key is being pressed.
-                    keyboard_state_matrix[row_idx][column_idx] = self.SW_PRESSED
-                else:
-                    # Else key is not pressed.
-                    keyboard_state_matrix[row_idx][column_idx] = self.SW_RELEASED
+                    scan_result |= (1 << bit_idx)
+
 
             #Return the port level into low, since the column scan has been done.
             column_dout.value = self.digital_low
 
         # Return the result
-        return keyboard_state_matrix
+        return scan_result
 
